@@ -32,7 +32,6 @@ public class GreeterServerProtocol extends SimpleSocketProtocol {
     }
 
     public void run() throws IOException {
-        String id = "peer1";
         // TODO modify this
         sendln("OK Greeter server ready to greet you.");
         while (isRunning() && isConnected()) {
@@ -45,7 +44,7 @@ public class GreeterServerProtocol extends SimpleSocketProtocol {
                 //ERAP Protocol
                 String peername = splited[1].split("\\.")[0].trim();
                 splited[1] = splited[1].split("\\.")[1].trim();
-                if(!peername.equals(id)) {
+                if(!peername.equals(ServerInfo.peerID)) {
                     Protocols.pdpProtocol(peername, splited);
                 } else{
                     rapProtocol(splited);

@@ -1,22 +1,19 @@
 
 package com.comp6231.socklib;
 
+import com.comp6231.lab3.server.ServerInfo;
+
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
+import java.net.*;
 import java.util.Enumeration;
 
 public class ServerPDPExample {
 	DatagramSocket dSocket = null;
 	private int udpPort = 6231;
-	private int tcpPort;
-	public void start(int port) {
+	public void start() {
 	new Thread(new Runnable() {
 		@Override
 		public void run(){
-			tcpPort = port;
 			runSdu();
 			dSocket.close();
 			}
@@ -25,8 +22,12 @@ public class ServerPDPExample {
 	private void runSdu() {
 		try {
 			byte[] receiveBuff = new byte[1024]; //receiving buffer
-			dSocket = new DatagramSocket(udpPort);
+
+			dSocket = new DatagramSocket(null);
+			dSocket.setReuseAddress(true);
+			dSocket.bind(new InetSocketAddress(udpPort));
 			dSocket.setBroadcast(true);
+
 			DatagramPacket dPacket = new DatagramPacket(receiveBuff, receiveBuff.length);
 			System.out.println("\nStarted UDP server, listening on Broadcast IP, port 6231\n");
 			while (true) {
@@ -38,7 +39,7 @@ public class ServerPDPExample {
 				if (msg.equals("PEER_REQUEST")) {
 					//TODO implement TCP port passing to clients
 					
-					String srvResponse = "PEER_RESPONSE " + tcpPort;
+					String srvResponse = "PEER_RESPONSE " + ServerInfo.tcpPort + " " + ServerInfo.peerID;
 					System.out.println(srvResponse);
 					byte[] sendBuff = srvResponse.getBytes();
 					DatagramPacket dPacket2 = new DatagramPacket(sendBuff, sendBuff.length, dPacket.getAddress(), dPacket.getPort());
