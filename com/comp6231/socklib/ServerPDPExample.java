@@ -33,21 +33,21 @@ public class ServerPDPExample {
 			while (true) {
 				System.out.println("> Ready to receive b-cast packets...");
 				dSocket.receive(dPacket); //receiving data
-				System.out.println("> Received packet from " + dPacket.getAddress().getHostAddress() 
-					+ ":" + dPacket.getPort());
+				//System.out.println("> Received packet from " + dPacket.getAddress().getHostAddress()
+				//	+ ":" + dPacket.getPort());
 				String msg = new String(dPacket.getData(), dPacket.getOffset(), dPacket.getLength());
 				if (msg.equals("PEER_REQUEST")) {
 					//TODO implement TCP port passing to clients
 					
 					String srvResponse = "PEER_RESPONSE " + ServerInfo.tcpPort + " " + ServerInfo.peerID;
-					System.out.println(srvResponse);
+					//System.out.println(srvResponse);
 					byte[] sendBuff = srvResponse.getBytes();
 					DatagramPacket dPacket2 = new DatagramPacket(sendBuff, sendBuff.length, dPacket.getAddress(), dPacket.getPort());
 					dSocket.send(dPacket2); 	//Send a response
-					System.out.println(getClass().getName() + "> Sent response to client IP: "
-						+ dPacket.getAddress().getHostAddress() + ":" + dPacket.getPort());
+					//System.out.println(getClass().getName() + "> Sent response to client IP: "
+					//	+ dPacket.getAddress().getHostAddress() + ":" + dPacket.getPort());
 				}
-				Thread.sleep(2000);
+				//Thread.sleep(2000);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

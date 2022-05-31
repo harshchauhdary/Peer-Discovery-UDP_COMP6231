@@ -17,6 +17,7 @@ import com.comp6231.socklib.ListenerInfo;
 import com.comp6231.socklib.SimpleSocketProtocol;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class GreeterServerProtocol extends SimpleSocketProtocol {
 
     public void run() throws IOException {
         // TODO modify this
+        new Thread(Protocols::pdpProtocol).start();
         sendln("OK Greeter server ready to greet you.");
         while (isRunning() && isConnected()) {
             String data = recvln();
@@ -45,7 +47,21 @@ public class GreeterServerProtocol extends SimpleSocketProtocol {
                 String peername = splited[1].split("\\.")[0].trim();
                 splited[1] = splited[1].split("\\.")[1].trim();
                 if(!peername.equals(ServerInfo.peerID)) {
-                    Protocols.pdpProtocol(peername, splited);
+                    int c = 0;
+                    InetAddress peerip=InetAddress.getByName("localhost");
+                    int peerport=0;
+                    for(Peers p : ServerInfo.peers) {
+                        if(p.getPeerId().equals(peername)){
+                            c++;
+                            peerip = p.getIp();
+                            peerport = Integer.parseInt(p.getPort());
+                        }
+                        System.out.println(p.getPeerId() + " " + p.getIp().toString() + " " + p.getPort());
+                        //Protocols.sendMessage(peername, splited);
+                    }
+                    if(c==1){
+                        messageToSend = Protocols.sendMessage(peerip, peerport, splited) + " in " + peername;
+                    }
                 } else{
                     rapProtocol(splited);
                 }
