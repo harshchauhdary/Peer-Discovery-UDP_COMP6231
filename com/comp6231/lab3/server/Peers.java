@@ -21,4 +21,13 @@ public class Peers {
     public InetAddress getIp() {
         return ip;
     }
+
+    @Override
+    public boolean equals(Object object){
+        if(!(object instanceof Peers)){
+            return false;
+        }
+        Peers p = (Peers) object;
+        return peerId.equals(p.peerId) && ip.equals(p.ip) && port.equals(p.port);
+    }
 }
