@@ -21,7 +21,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public class ServerProtocol extends SimpleSocketProtocol {
-    private String messageToSend;
 
     public ServerProtocol(Socket s, ListenerInfo info) {
         super(s, info);
@@ -42,6 +41,7 @@ public class ServerProtocol extends SimpleSocketProtocol {
             String[] splited = data.split(" ");
 
             //Checking if message has a peer_id, and it's not that of the current peer itself
+            String messageToSend;
             if(splited.length > 1 && splited[1].trim().contains(".")){
                 //ERAP Protocol
                 String peername = splited[1].split("\\.")[0].trim();
@@ -61,7 +61,8 @@ public class ServerProtocol extends SimpleSocketProtocol {
                     }
                     if(c==1){
                         messageToSend = Protocols.sendMessage(peerip, peerport, splited) + " in " + peername;
-                    }
+                    }else {
+                        messageToSend = "SERVER: ERR Non-existence or ambiguous repository " + peername;}
                 } else{
                     messageToSend = Protocols.rapProtocol(splited);
                 }

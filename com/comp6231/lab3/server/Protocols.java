@@ -112,39 +112,58 @@ public class Protocols {
         switch (splited[0].trim().toUpperCase()) {
             case "ADD":
                 return insertToDict(splited);
+
             case "DELETE":
                 return deleteFromDict(splited);
+
             case "SET":
                 return setInDict(splited);
+
             case "GETVALUE":
                 if(dictionary.containsKey(splited[1].trim())) {
                     return dictionary.get(splited[1].trim()).iterator().next().toString();
                 }else{return "Key not found";}
+
             case "GETVALUES":
                 if(dictionary.containsKey(splited[1].trim())) {
                     return dictionary.get(splited[1].trim()).toString();
                 }else{return "Key not found";}
+
             case "GP":
-                for(Peers peer:ServerInfo.peers){
-                    return peer.getPeerId() + " ";
+                String peersnames = "Peers: ";
+                if(!ServerInfo.peers.isEmpty())
+                {
+                    for(Peers peer:ServerInfo.peers){
+                        peersnames += peer.getPeerId() + " ";
+                    }
                 }
-                break;
-//            case "KEYS":
-//                return;
-//                case "RESET":
-//                    return;
-//                case "AVG":
-//                    return;
-//                case "MAX":
-//                    return;
-//                case "MIN":
-//                    return;
-//                case "SUM":
-//                    return;
+                return peersnames;
+
+            case "KEYS":
+                String keys = "Keys: ";
+                for(String key : dictionary.keySet()){
+                    keys += key + " | ";
+                }
+                return keys;
+
+            case "RESET":
+                dictionary.clear();
+                return "Reset successful";
+
+            case "AVG":
+
+            case "SUM":
+
+            case "COUNT":
+
+            case "MIN":
+
+            case "MAX":
+                return calcAggregates(splited);
+
             default:
                 return "Invalid Command";
         }
-        return "Invalid Command";
     }
 
 
@@ -192,4 +211,23 @@ public class Protocols {
             return "Invalid Command! Try again.";
         }
     }
+
+    public static String calcAggregates(String[] message){
+        if(dictionary.containsKey(message[1].trim()) && !dictionary.get(message[1].trim()).isEmpty()) {
+            double value = 0;
+            IntSummaryStatistics ss = dictionary.get(message[1].trim()).stream().mapToInt(Integer::intValue).summaryStatistics();
+            if(message[0].trim().equalsIgnoreCase("SUM"))
+                value = ss.getSum();
+            if(message[0].trim().equalsIgnoreCase("COUNT"))
+                value = ss.getCount();
+            if(message[0].trim().equalsIgnoreCase("AVG"))
+                value = ss.getAverage();
+            if(message[0].trim().equalsIgnoreCase("MIN"))
+                value = ss.getMin();
+            if(message[0].trim().equalsIgnoreCase("MAX"))
+                value = ss.getMax();
+            return Double.toString(value);
+        }else{return "Key not found";}
+    }
+
 }
