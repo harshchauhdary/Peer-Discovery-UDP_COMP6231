@@ -19,15 +19,11 @@ import com.comp6231.socklib.SimpleSocketProtocol;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
-public class GreeterServerProtocol extends SimpleSocketProtocol {
+public class ServerProtocol extends SimpleSocketProtocol {
     private String messageToSend;
 
-    public GreeterServerProtocol(Socket s, ListenerInfo info) {
+    public ServerProtocol(Socket s, ListenerInfo info) {
         super(s, info);
     }
 

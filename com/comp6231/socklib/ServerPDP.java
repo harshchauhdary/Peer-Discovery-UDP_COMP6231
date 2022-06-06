@@ -3,11 +3,9 @@ package com.comp6231.socklib;
 
 import com.comp6231.lab3.server.ServerInfo;
 
-import java.io.IOException;
 import java.net.*;
-import java.util.Enumeration;
 
-public class ServerPDPExample {
+public class ServerPDP {
 	DatagramSocket dSocket = null;
 	private int udpPort = 6231;
 	public void start() {

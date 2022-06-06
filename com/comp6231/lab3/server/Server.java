@@ -14,11 +14,11 @@
 package com.comp6231.lab3.server;
 
 import com.comp6231.socklib.ServerListener;
-import com.comp6231.socklib.ServerPDPExample;
+import com.comp6231.socklib.ServerPDP;
 
 import java.util.Scanner;
 
-public class GreeterServerExample {
+public class Server {
     public static void main(String[] args) {
 
 		if (args.length < 2) {
@@ -34,9 +34,9 @@ public class GreeterServerExample {
 		}
 
         try {
-		ServerListener server = new ServerListener("GreeterServer", ServerInfo.tcpPort, GreeterServerProtocol::new);
+		ServerListener server = new ServerListener("TCPServer", ServerInfo.tcpPort, ServerProtocol::new);
 		server.start();
-		ServerPDPExample spdp = new ServerPDPExample();
+		ServerPDP spdp = new ServerPDP();
 		spdp.start();
 		System.out.println("\nStarted TCP server port (6232)\nYou may open multiple simultaneous connections.");
 		System.out.println("\nPress hit ENTER if you wish to stop the server. Note that the service may NOT stop immediately.");
