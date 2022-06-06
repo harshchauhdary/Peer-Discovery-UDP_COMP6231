@@ -161,6 +161,9 @@ public class Protocols {
             case "MAX":
                 return calcAggregates(splited);
 
+            case "DSUM":
+                return getDSUM(splited);
+
             default:
                 return "Invalid Command";
         }
@@ -228,6 +231,47 @@ public class Protocols {
                 value = ss.getMax();
             return Double.toString(value);
         }else{return "Key not found";}
+    }
+
+    public static String getDSUM(String[] message) throws UnknownHostException {
+        int dsum = 0;
+        try {
+            dsum += Double.parseDouble(calcAggregates(new String[]{"sum", message[1].trim()}));
+        }
+        catch (NumberFormatException ne){
+            return "Key no found in " + ServerInfo.peerID;
+        }
+
+        if(message.length>2 && message[2].trim().equalsIgnoreCase("INCLUDING")){
+            String[] pl = Arrays.copyOfRange(message, 3, message.length);
+            System.out.println(pl.length);
+            for(String peer:pl){
+                int c = 0;
+                InetAddress peerip=InetAddress.getByName("localhost");
+                int peerport=0;
+                for(Peers p : ServerInfo.peers) {
+                    if(p.getPeerId().equals(peer.trim())){
+                        c++;
+                        peerip = p.getIp();
+                        peerport = Integer.parseInt(p.getPort());
+                    }
+                    System.out.println(p.getPeerId() + " " + p.getIp().toString() + " " + p.getPort());
+                    //Protocols.sendMessage(peername, splited);
+                }
+                if(c==1){
+                    try {
+                        System.out.println(Protocols.sendMessage(peerip, peerport, new String[]{"sum", message[1].trim()}));
+                        dsum += Double.parseDouble(Protocols.sendMessage(peerip, peerport, new String[]{"sum", message[1].trim()}));
+                    }catch(NumberFormatException ne){
+                        return "Key not found in "+peer;
+                    }
+                    }else {
+                    return  "SERVER: ERR Non-existence or ambiguous repository " + peer;}
+            }
+
+        }
+        return String.valueOf(dsum);
+
     }
 
 }
