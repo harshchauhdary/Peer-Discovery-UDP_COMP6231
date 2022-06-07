@@ -1,3 +1,26 @@
 add a 12
-add a 13
+add peer1.a 13
+add peer2.a 15
+add peer2.b 56
+set peer2.b 10
+add peer3.a 11
+add peer3.a 23
+add peer2.a 20
 getvalues a
+getvalue peer2.a
+getvalues peer3.a
+add peer1.b 69
+keys
+add peer2.b 20
+delete peer2.b 20
+reset
+add a 45
+add a 9
+min a
+max peer2.a
+sum peer3.a
+count peer2.a
+avg peer2.a
+avg peer1.a
+dsum a including peer2 peer3
+dsum a including peer2 peer3 peer4
