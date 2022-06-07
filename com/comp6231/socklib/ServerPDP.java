@@ -1,7 +1,7 @@
 
 package com.comp6231.socklib;
 
-import com.comp6231.lab3.server.ServerInfo;
+import com.comp6231.server.ServerInfo;
 
 import java.net.*;
 

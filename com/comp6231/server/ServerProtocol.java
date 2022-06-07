@@ -11,7 +11,7 @@
  *
  */
 
-package com.comp6231.lab3.server;
+package com.comp6231.server;
 
 import com.comp6231.socklib.ListenerInfo;
 import com.comp6231.socklib.SimpleSocketProtocol;

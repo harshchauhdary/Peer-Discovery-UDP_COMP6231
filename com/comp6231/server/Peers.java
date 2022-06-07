@@ -1,4 +1,4 @@
-package com.comp6231.lab3.server;
+package com.comp6231.server;
 
 import java.net.InetAddress;
 

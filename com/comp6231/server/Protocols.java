@@ -1,6 +1,4 @@
-package com.comp6231.lab3.server;
-
-import com.comp6231.socklib.SimpleSocketProtocol;
+package com.comp6231.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
