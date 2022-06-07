@@ -1,0 +1,3 @@
+add a 12
+add a 13
+getvalues a
